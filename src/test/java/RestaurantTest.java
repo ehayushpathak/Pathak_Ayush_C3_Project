@@ -7,19 +7,28 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RestaurantTest {
     Restaurant restaurant;
-    //REFACTOR ALL THE REPEATED LINES OF CODE
-
-    //>>>>>>>>>>>>>>>>>>>>>>>>>OPEN/CLOSED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    //-------FOR THE 2 TESTS BELOW, YOU MAY USE THE CONCEPT OF MOCKING, IF YOU RUN INTO ANY TROUBLE
+    @BeforeEach
+    public void addNewRestaurantfortesting() {
+        restaurant = new Restaurant("Amelie's cafe", "Chennai", LocalTime.parse("10:30:00"), LocalTime.parse("22:00:00"));
+        restaurant.addToMenu("Sweet corn soup", 119);
+        restaurant.addToMenu("Vegetable lasagne", 269);
+    }
     @Test
     public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time(){
         //WRITE UNIT TEST CASE HERE
+        Restaurant newRestaurant = Mockito.spy(restaurant);
+        LocalTime afterOpentime = LocalTime.parse("12:00");
+        when(newRestaurant.getCurrentTime()).thenReturn(afterOpentime);
+        assertTrue(newRestaurant.isRestaurantOpen());
     }
 
     @Test
     public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time(){
         //WRITE UNIT TEST CASE HERE
-
+        Restaurant newRestaurant = Mockito.spy(restaurant);
+        LocalTime outsideOpentime = LocalTime.parse("09:00");
+        when(newRestaurant.getCurrentTime()).thenReturn(outsideOpentime);
+        assertFalse(newRestaurant.isRestaurantOpen());
     }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<OPEN/CLOSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
